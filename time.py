@@ -1,7 +1,6 @@
-import time
-import datetime
 from PIL import Image, ImageDraw, ImageFont
 import Adafruit_SSD1306
+import datetime
 
 # Initialization of OLED display
 disp = Adafruit_SSD1306.SSD1306_128_32(rst=None, i2c_address=0x3C)
@@ -23,62 +22,29 @@ font = ImageFont.truetype(font_path, 15)
 
 try:
     now = datetime.datetime.now()
-    weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    weekdays = ['Mon', 'Thu', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     while True:
 
         if now.second != datetime.datetime.now().second:
             now = datetime.datetime.now()
+            weekday_str = weekdays[now.weekday()]
+            text = now.strftime('%Y/%m/%d') + f' {weekday_str}\n' + now.strftime('%H:%M:%S')
             if now.minute == 0 and now.second == 0:
-                if now.month == 1 and now.day == 1:
-                    font = ImageFont.truetype(font_path, 30)
-                    text = now.strftime('%Y')
-                    draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                    draw.text((0, 0), text, font=font, fill=0)
-                    disp.image(image)
-                    disp.display()
-                    text = ('01/01')
-                    time.sleep(5)
-                    draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                    draw.text((0, 0), text, font=font, fill=0)
-                    disp.image(image)
-                    disp.display()
-                    font = ImageFont.truetype(font_path, 15)
-                    time.sleep(5)
-
-                elif now.hour == 0 or now.hour == 12:
-                    font = ImageFont.truetype(font_path, 30)
-                    text = now.strftime('%m/%d')
-                    draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                    draw.text((0, 0), text, font=font, fill=0)
-                    disp.image(image)
-                    disp.display()
-                    font = ImageFont.truetype(font_path, 15)
-                    time.sleep(10)
-
-                else:
-                    weekday_str = weekdays[now.weekday()]
-                    text = now.strftime('%Y/%m/%d') + f' {weekday_str}\n' + now.strftime('%H:%M:%S')
-                    draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                    draw.text((0, 0), text, font=font, fill=0)
-                    disp.image(image)
-                    disp.display()
-                    while now.second <= 9:
-                        if now.second != datetime.datetime.now().second:
-                            now = datetime.datetime.now()
-                            weekday_str = weekdays[now.weekday()]
-                            text = now.strftime('%Y/%m/%d') + f' {weekday_str}\n' + now.strftime('%H:%M:%S')
-                            draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                            draw.text((0, 0), text, font=font, fill=0)
-                            disp.image(image)
-                            disp.display()
-                            draw.rectangle((0, 0, width, height), outline=0, fill=1)
-                            draw.text((0, 0), text, font=font, fill=0)
-                            disp.image(image)
-                            disp.display()
+                draw.rectangle((0, 0, width, height), outline=0, fill=1)
+                draw.text((0, 0), text, font=font, fill=0)
+                disp.image(image)
+                disp.display()
+                while now.second < 10:
+                    if now.second != datetime.datetime.now().second:
+                        now = datetime.datetime.now()
+                        weekday_str = weekdays[now.weekday()]
+                        text = now.strftime('%Y/%m/%d') + f' {weekday_str}\n' + now.strftime('%H:%M:%S')
+                        draw.rectangle((0, 0, width, height), outline=0, fill=1)
+                        draw.text((0, 0), text, font=font, fill=0)
+                        disp.image(image)
+                        disp.display()
 
             else:
-                weekday_str = weekdays[now.weekday()]
-                text = now.strftime('%Y/%m/%d') + f' {weekday_str}\n' + now.strftime('%H:%M:%S')
                 draw.rectangle((0, 0, width, height), outline=0, fill=0)
                 draw.text((0, 0), text, font=font, fill=1)
                 disp.image(image)
