@@ -1,7 +1,6 @@
-import time
-import datetime
 from PIL import Image, ImageDraw, ImageFont
 import Adafruit_SSD1306
+import datetime
 
 # OLEDディスプレイの初期化
 disp = Adafruit_SSD1306.SSD1306_128_32(rst=None, i2c_address=0x3C)
